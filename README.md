@@ -206,6 +206,4 @@ Headers supported by the server (`server/index.js`):
 
 ---
 
-## License
-Specify your license here (e.g., MIT). If omitted, the project is proprietary by default.
 
