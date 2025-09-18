@@ -1,160 +1,75 @@
+# Nitish Kumar singh
+# Mechanical Engineering
+# IIT Guwahati
+
 # AI Lecture Summarizer
 
-A powerful web application that uses AI to automatically summarize lecture videos into structured notes, study plans, and downloadable reports.
+Process a folder of lecture videos into structured Word and LaTeX reports using open-source transcription (faster-whisper) and Gemini for summarization.
 
-## ✨ Features
+## Features
+- Multi-format video input: `.mp4`, `.mkv`, `.mov`, `.avi`, `.m4v`
+- Audio extraction via ffmpeg
+- Speech-to-text with faster-whisper
+- Gemini-powered, richer summaries
+- LaTeX-like structured `.docx` report via python-docx
+- Optional `.tex` LaTeX report and PDF compilation
 
-- **AI-Powered Summarization**: Uses Gemini AI to create comprehensive lecture summaries
-- **Multiple Export Formats**: Download summaries as Word (.docx) or LaTeX (.tex) files
-- **User Authentication**: Sign up/login system with MongoDB integration
-- **Profile Management**: Save preferences and track upload history
-- **Guest Mode**: Try the app without creating an account
-- **Modern UI/UX**: Beautiful dark theme with neon accents and animations
-- **Batch Processing**: Upload multiple videos at once
-- **Real-time Progress**: Visual progress tracking during processing
+## Requirements
+- Python 3.10+
+- ffmpeg installed and on PATH
+  - Windows: Download from `https://www.gyan.dev/ffmpeg/builds/`, unzip, and add `bin` to PATH.
+- Gemini API key
+- (Optional) LaTeX distribution to compile PDF (`pdflatex` on PATH)
+  - Windows: MiKTeX `https://miktex.org/download`
+  - macOS: MacTeX `https://tug.org/mactex/`
+  - Linux: TeX Live via your package manager
 
-## 🚀 Quick Start
-
-### Prerequisites
-
-- Node.js (v14 or higher)
-- Python (v3.8 or higher)
-- MongoDB (local or cloud instance)
-- Gemini API key (optional - can be set by users)
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd ai-lecture-summarizer
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   pip install -r requirements.txt
-   ```
-
-3. **Set up environment variables**
-   ```bash
-   cp env.example .env
-   ```
-   
-   Edit `.env` with your configuration:
-   ```env
-   MONGODB_URI=mongodb://localhost:27017/lecture-summarizer
-   JWT_SECRET=your-super-secret-jwt-key
-   GEMINI_API_KEY=your-gemini-api-key
-   ```
-
-4. **Start the application**
-   ```bash
-   npm start
-   ```
-
-5. **Open your browser**
-   Navigate to `http://localhost:3000`
-
-## 🔐 Authentication
-
-The application supports three modes:
-
-1. **Registered Users**: Full access with saved preferences and upload history
-2. **Guest Mode**: Try the app without creating an account
-3. **Anonymous**: Limited functionality
-
-### User Features
-
-- **Profile Management**: Update name, preferences, and API keys
-- **Upload History**: Track all processed videos
-- **Settings Sync**: Preferences saved across sessions
-- **Personal Dashboard**: View statistics and recent activity
-
-## 🎯 Usage
-
-1. **Sign Up/Login** or continue as guest
-2. **Upload Videos**: Drag and drop or click to select video files
-3. **Configure Settings**: Choose model size and API key (optional)
-4. **Process**: Click "Summarize Videos" to start processing
-5. **Download**: Get your summaries in Word or LaTeX format
-6. **Chat**: Ask questions about your lecture content
-
-## 🛠️ Technical Details
-
-### Backend
-- **Node.js/Express**: Web server and API
-- **MongoDB**: User data and upload history
-- **JWT**: Authentication tokens
-- **Multer**: File upload handling
-
-### Frontend
-- **Vanilla JavaScript**: No frameworks, pure JS
-- **Modern CSS**: CSS Grid, Flexbox, animations
-- **Responsive Design**: Works on desktop and mobile
-
-### AI Processing
-- **Python**: Video processing and AI integration
-- **Gemini API**: Text summarization
-- **Whisper**: Audio transcription
-- **Multiple Models**: Support for different model sizes
-
-## 📁 Project Structure
-
-```
-├── public/                 # Frontend files
-│   ├── index.html         # Main application
-│   ├── login.html         # Login page
-│   ├── signup.html        # Signup page
-│   ├── styles.css         # Main styles
-│   ├── auth.css          # Authentication styles
-│   ├── main.js           # Main JavaScript
-│   └── auth.js           # Authentication JavaScript
-├── server/                # Backend files
-│   ├── index.js          # Express server
-│   └── models/           # Database models
-│       └── User.js       # User schema
-├── src/                   # AI processing (unchanged)
-│   └── ai_lecture_summarizer/
-├── uploads/               # Uploaded videos
-├── outputs/              # Generated summaries
-└── data/                 # Application data
+## Setup
+```bash
+python -m venv .venv
+. .venv/Scripts/activate  # Windows PowerShell: .venv\Scripts\Activate.ps1
+pip install -r requirements.txt
 ```
 
-## 🔧 Configuration
+Set your Gemini API key:
+```powershell
+$env:GEMINI_API_KEY = "your_api_key_here"
+```
 
-### Environment Variables
+## Usage
+```powershell
+python main.py --input-dir "D:\\lectures" --output-dir "D:\\project\\outputs" --model-size base --gemini-model gemini-1.5-flash --pdf
+```
+Flags:
+- `--no-tex`: disable LaTeX `.tex` output
+- `--pdf`: attempt to compile `.tex` to PDF using `pdflatex`
 
-- `MONGODB_URI`: MongoDB connection string
-- `JWT_SECRET`: Secret key for JWT tokens
-- `GEMINI_API_KEY`: Default Gemini API key
-- `PYTHON_BIN`: Python executable path
-- `PORT`: Server port (default: 3000)
+Outputs are saved under `outputs/`:
+- `audio/` extracted WAV files
+- `transcripts/` transcript `.txt`
+- `reports/` Word documents
+- `latex/` LaTeX `.tex` files
+- `pdf/` compiled PDFs (if `--pdf`)
 
-### Model Sizes
+## Notes
+- For faster transcription on GPU, install CUDA-enabled dependencies per faster-whisper docs and pick an appropriate model.
+- Summaries are slightly longer and include sections for key takeaways, terminology, and review questions.
+- To guide transcription language, use `--language en` (ISO code).
 
-- **tiny**: Fastest, least accurate
-- **base**: Balanced (recommended)
-- **small**: Better quality
-- **medium**: High quality
-- **large-v3**: Best quality, slowest
+## Web App (optional)
 
-## 🤝 Contributing
+Setup:
+```powershell
+npm install
+```
+Run:
+```powershell
+npm run start
+```
+Open `http://localhost:3000`, upload a video, optionally provide `Gemini API Key`, and click Summarize. Downloads appear when ready.
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
-## 🆘 Support
-
-For issues and questions:
-1. Check the documentation
-2. Search existing issues
-3. Create a new issue with details
-4. Include error logs and steps to reproduce
+The server runs the Python agent as:
+```powershell
+python main.py --input-dir uploads --output-dir outputs --model-size base --gemini-model gemini-1.5-flash --web-single
+```
+If `GEMINI_API_KEY` is not set on the server, you can pass one per request via the `x-gemini-key` header from the web UI.
