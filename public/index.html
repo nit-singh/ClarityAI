@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>AI-Powered Lecture Summarizer</title>
+	<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+	<div class="container">
+		<h1>AI-Powered Lecture Summarizer</h1>
+		<p>Upload a lecture video to generate summaries.</p>
+		<form id="uploadForm">
+			<label class="label">Video File</label>
+			<input type="file" id="video" name="video" accept=".mp4,.mkv,.mov,.avi,.m4v" required>
+			<label class="label">Summarizer Mode</label>
+			<select id="mode">
+				<option value="lora" selected>LoRA (fine-tuned, local)</option>
+				<option value="gemini">Gemini (API)</option>
+			</select>
+			<label class="label">Gemini API Key (optional)</label>
+			<input type="password" id="apiKey" placeholder="Enter API key or set on server">
+			<button type="submit" id="submitBtn">Summarize</button>
+		</form>
+		<div id="status" class="status"></div>
+		<div id="results" class="results hidden">
+			<h2>Highlights</h2>
+			<div id="bullets" class="chat"></div>
+			<div class="downloads">
+				<a id="docxLink" class="btn" href="#" download>Download Word (.docx)</a>
+				<a id="texLink" class="btn" href="#" download>Download LaTeX (.tex)</a>
+			</div>
+		</div>
+	</div>
+	<script src="/main.js"></script>
+</body>
+</html>
